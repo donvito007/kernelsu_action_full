@@ -1,4 +1,4 @@
-name: Build KernelSU For Raphael
+name: Build NOKernelSU For Raphael
 
 on:
   workflow_dispatch:
