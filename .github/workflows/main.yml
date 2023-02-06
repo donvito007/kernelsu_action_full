@@ -2,6 +2,16 @@ name: Build KernelSU For Raphael
 
 on:
   workflow_dispatch:
+# How to use this variable?
+# $variable_name
+env:
+  DEVICE_CODE: raphael
+  REPO_SRC_NAME: kernel_xiaomi_raphael_ksu
+  KERNEL_REPO_SRC: https://github.com/PixelExperience-Devices/kernel_xiaomi_raphael.git
+  CLANG_REPO_SRC: https://gitlab.com/crdroidandroid/android_prebuilts_clang_host_linux-x86_clang-r445002
+  AARCH64_REPO_SRC: https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9
+  ARM_REPO_SRC: https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9
+  PATCH_REPO_SRC: https://github.com/SoDebug/AnyKernel3.git
 
 jobs:
   KSUForRaphael:
@@ -21,6 +31,7 @@ jobs:
           git clone https://github.com/SoDebug/AnyKernel3.git
       - name: intergrate KernelSU
         run: |
+          cd kernel_xiaomi_raphael
           curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -
           echo "CONFIG_KPROBES=y" >> arch/arm64/configs/raphael_defconfig
           echo "CONFIG_HAVE_KPROBES=y" >> arch/arm64/configs/raphael_defconfig
@@ -54,7 +65,7 @@ jobs:
           
       - name: Packaging the Kernel
         run: |
-          cp -v kernel_xiaomi_raphael_ksu/out/arch/arm64/boot/Image.gz \
+          cp -v kernel_xiaomi_raphael/out/arch/arm64/boot/Image.gz \
                      AnyKernel3/
           pushd AnyKernel3
           7z a -mx9 ../Raphael-KernelSU_PE13.zip *
