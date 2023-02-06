@@ -2,8 +2,17 @@ name: Build KernelSU For Raphael
 
 on:
   workflow_dispatch:
+
 # How to use this variable?
 # $variable_name
+env:
+  Device_code: raphael
+  Kernel_repo_src: https://github.com/PixelExperience-Devices/kernel_xiaomi_raphael.git
+  Kernel_repo_name: kernel_xiaomi_raphael
+  Clang_repo_src: https://gitlab.com/crdroidandroid/android_prebuilts_clang_host_linux-x86_clang-r445002
+  Aarch64_repo_src: https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9
+  Arm64_repo_src: https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9
+  Patch_repo_src: https://github.com/SoDebug/AnyKernel3.git
 
 jobs:
   KSUForRaphael:
@@ -16,14 +25,19 @@ jobs:
           sudo apt clean
       - name: Cloning Sources and Toolchain
         run: |
-          git clone https://github.com/PixelExperience-Devices/kernel_xiaomi_raphael.git --depth=1 -b thirteen --recurse-submodules
-          git clone https://gitlab.com/crdroidandroid/android_prebuilts_clang_host_linux-x86_clang-r445002 --depth=1 --single-branch --no-tags -b 12.0 ~/clang
-          git clone https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9 -b android-10.0.0_r47 --depth=1 --single-branch --no-tags ~/aarch64-linux-android-4.9
-          git clone https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9 -b android-10.0.0_r47 --depth=1 --single-branch --no-tags ~/arm-linux-androideabi-4.9
-          git clone https://github.com/SoDebug/AnyKernel3.git
+          # git clone https://github.com/PixelExperience-Devices/kernel_xiaomi_raphael.git --depth=1 -b thirteen --recurse-submodules
+          git clone $Kernel_repo_src --depth=1 -b thirteen --recurse-submodules
+          # git clone https://gitlab.com/crdroidandroid/android_prebuilts_clang_host_linux-x86_clang-r445002 --depth=1 --single-branch --no-tags -b 12.0 ~/clang
+          git clone $Clang_repo_src --depth=1 --single-branch --no-tags -b 12.0 ~/clang
+          # git clone https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9 -b android-10.0.0_r47 --depth=1 --single-branch --no-tags ~/aarch64-linux-android-4.9
+          git clone $Aarch64_repo_src -b android-10.0.0_r47 --depth=1 --single-branch --no-tags ~/aarch64-linux-android-4.9
+          # git clone https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9 -b android-10.0.0_r47 --depth=1 --single-branch --no-tags ~/arm-linux-androideabi-4.9
+          git clone $Arm64_repo_src -b android-10.0.0_r47 --depth=1 --single-branch --no-tags ~/arm-linux-androideabi-4.9
+          # git clone https://github.com/SoDebug/AnyKernel3.git
+          git clone $Patch_repo_src --depth=1
       - name: intergrate KernelSU
         run: |
-          cd kernel_xiaomi_raphael
+          cd $Kernel_repo_name
           curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -
           echo "CONFIG_KPROBES=y" >> arch/arm64/configs/raphael_defconfig
           echo "CONFIG_HAVE_KPROBES=y" >> arch/arm64/configs/raphael_defconfig
@@ -41,7 +55,7 @@ jobs:
           export CROSS_COMPILE=aarch64-linux-android-
           export CROSS_COMPILE_ARM32=arm-linux-androideabi-
           output_dir=out
-          pushd kernel_xiaomi_raphael_ksu
+          pushd $Kernel_repo_name
           make O="$output_dir" \
                       raphael_defconfig
           make -j $(nproc) \
@@ -50,7 +64,7 @@ jobs:
           popd
       - name: Creating Config Info
         run: |
-          echo "Device: RedMi K20 Pro
+          echo "Device: RedMi K20 Pro($Device_code)
           Code: raphael
           Build Code: ${{ github.run_number }}
           Only For Pixel Experience 13(Official) commit:543bbf1
@@ -58,7 +72,7 @@ jobs:
           
       - name: Packaging the Kernel
         run: |
-          cp -v kernel_xiaomi_raphael/out/arch/arm64/boot/Image.gz \
+          cp -v $Kernel_repo_name/out/arch/arm64/boot/Image.gz \
                      AnyKernel3/
           pushd AnyKernel3
           7z a -mx9 ../Raphael-KernelSU_PE13.zip *
