@@ -26,6 +26,7 @@ jobs:
           echo "CONFIG_KPROBES=y" >> arch/arm64/configs/raphael_defconfig
           echo "CONFIG_HAVE_KPROBES=y" >> arch/arm64/configs/raphael_defconfig
           echo "CONFIG_KPROBE_EVENTS=y" >> arch/arm64/configs/raphael_defconfig
+          echo "CLANG_TRIVIAL_AUTO_VAR_INIT_ZERO=y" >> >> arch/arm64/configs/raphael_defconfig
       - name: Compiling Kernel
         run: |
           CLANG=~/clang/bin
