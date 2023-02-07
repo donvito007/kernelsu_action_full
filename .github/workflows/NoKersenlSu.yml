@@ -48,7 +48,7 @@ jobs:
           
       - name: Packaging the Kernel
         run: |
-          cp -v $Kernel_repo_name/out/arch/arm64/boot/Image.gz \
+          cp -v kernel_xiaomi_raphael/out/arch/arm64/boot/Image.gz \
                      AnyKernel3/
           pushd AnyKernel3
           7z a -mx9 ../Raphael-KernelSU_PE13.zip *
