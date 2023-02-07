@@ -1,4 +1,4 @@
-name: Build KernelSU For Raphael
+name: Build KernelSU For Raphael(Use Ofiicial KSU)
 
 on:
   workflow_dispatch:
