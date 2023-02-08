@@ -45,7 +45,7 @@ jobs:
           output_dir=out
           pushd kernel_xiaomi_raphael
           make LLVM=1 LLVM_IAS=1 CC="ccache clang" raphael_defconfig
-          make LLVM=1 LLVM_IAS=1 CC="ccache clang" -j$(grep -c ^processor /proc/cpuinfo)
+          make LLVM=1 LLVM_IAS=1 CC="ccache clang" -fno-unresolved-symbols -j$(grep -c ^processor /proc/cpuinfo)
           # make O="$output_dir" \
           #            raphael_defconfig
           # make -j $(nproc) \
