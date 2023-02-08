@@ -1,4 +1,4 @@
-name: Build KernelSU For Raphael(SA13)
+name: Build Kernel(SA13_tree_ksu_kprobe)
 
 on:
   workflow_dispatch:
@@ -48,32 +48,29 @@ jobs:
           pushd kernel_xiaomi_raphael
           make LLVM=1 LLVM_IAS=1 CC="ccache clang" raphael_defconfig
           make LLVM=1 LLVM_IAS=1 CC="ccache clang" CFLAGS="-fno-unresolved-symbols" -j$(grep -c ^processor /proc/cpuinfo)
-          # make O="$output_dir" \
-          #            raphael_defconfig
-          # make -j $(nproc) \
-          #            O="$output_dir" \
-          #            CC=clang -enable-trivial-auto-var-init-zero-knowing-it-will-be-removed-from-clang
           popd
       - name: Creating Config Info
         run: |
-          echo "Device: RedMi K20 Pro(SA)
+          echo "Device: RedMi K20 Pro 
+          Source Code Tree: SOVIET-ANDROID branch:13.0
           Code: raphael
-          Build Code: ${{ github.run_number }}
-          Only For SOVIET-ANDROID(13.0)
-          KernelSU For Raphel" >> INFO.txt
+          Contain KernelSU: YES
+          Build Code: $(date +%Y%m%d)_${{ github.run_number }}
+          For SOVIET-ANDROID Kernel 13.0
+          " >> INFO.txt
           
       - name: Packaging the Kernel
         run: |
           cp -v kernel_xiaomi_raphael/out/arch/arm64/boot/Image.gz \
                      AnyKernel3/
           pushd AnyKernel3
-          7z a -mx9 ../Raphael-KernelSU_SA13.zip *
+          7z a -mx9 ../Raphael-Kernel_KSU_Kprobe_SA13_$(date +%Y%m%d).zip *
           popd
       - name: Uploading Kernel Package to GH-Release
         uses: ncipollo/release-action@v1.8.6
         with:
-          artifacts: Raphael-KernelSU_SA13.zip
-          name: " Raphael-KernelSU_SA13"
-          tag: " ${{ github.run_number }}_Raphael-KernelSU_SA13"
+          artifacts: Raphael-Kernel_KSU_Kprobe_SA13_$(date +%Y%m%d).zip
+          name: " Raphael-Kernel_KSU_Kprobe_SA13_$(date +%Y%m%d).zip"
+          tag: " ${{ github.run_number }}_Raphael-Kernel_KSU_Kprobe_SA13"
           bodyFile: "INFO.txt"
           token: ${{ secrets.GITHUB_TOKEN }}
