@@ -53,13 +53,13 @@ jobs:
           cp -v kernel_xiaomi_raphael_PE/out/arch/arm64/boot/Image.gz \
                      AnyKernel3/
           pushd AnyKernel3
-          7z a -mx9 ../Raphael-Kernel_KSU_Manully_PE13_$(date +%Y%m%d).zip *
+          7z a -mx9 ../Raphael-Kernel_KSU_Manully_PE13.zip *
           popd
       - name: Uploading Kernel Package to GH-Release
         uses: ncipollo/release-action@v1.8.6
         with:
-          artifacts: Raphael-Kernel_KSU_Manully_PE13_$(date +%Y%m%d).zip
-          name: " Raphael-Kernel_KSU_Manully_PE13_$(date +%Y%m%d)"
+          artifacts: Raphael-Kernel_KSU_Manully_PE13.zip
+          name: " Raphael-Kernel_KSU_Manully_PE13"
           tag: " ${{ github.run_number }}_Raphael-Kernel_KSU_Manully_PE13"
           bodyFile: "INFO.txt"
           token: ${{ secrets.GITHUB_TOKEN }}
