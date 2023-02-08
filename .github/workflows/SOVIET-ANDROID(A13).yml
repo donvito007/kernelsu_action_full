@@ -28,8 +28,7 @@ jobs:
           echo "CONFIG_KPROBE_EVENTS=y" >> arch/arm64/configs/raphael_defconfig
       - name: Compiling Kernel
         run: |
-          # CLANG=~/clang/bin
-          CLANG=~/linux-x86/clang-r468909b/bin
+          CLANG=~/clang/bin
           GCC32=~/arm-linux-androideabi-4.9/bin
           GCC64=~/aarch64-linux-android-4.9/bin
           PATH=$CLANG:$GCC64:$GCC32:$PATH
