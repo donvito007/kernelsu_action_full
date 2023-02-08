@@ -35,6 +35,7 @@ jobs:
           export PATH
           export ARCH=arm64
           export CLANG_TRIPLE=aarch64-linux-gnu
+          export CLANG_CXX_FLAGS="-ftrivial-auto-var-init=zero -enable-trivial-auto-var-init-zero-knowing-it-will-be-removed-from-clang"
           export CROSS_COMPILE=aarch64-linux-android-
           export CROSS_COMPILE_ARM32=arm-linux-androideabi-
           output_dir=out
@@ -44,7 +45,6 @@ jobs:
           make -j $(nproc) \
                        O="$output_dir" \
                        CC=clang \
-                       -enable-trivial-auto-var-init-zero-knowing-it-will-be-removed-from-clang
           popd
       - name: Creating Config Info
         run: |
