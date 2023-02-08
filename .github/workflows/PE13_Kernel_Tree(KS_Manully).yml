@@ -20,7 +20,7 @@ jobs:
           git clone https://github.com/SoDebug/AnyKernel3.git
       - name: Add KernelSU to Kernel Source Tree
         run: |
-          cd kernel_xiaomi_raphael
+          cd kernel_xiaomi_raphael_PE
           curl -LSs "https://raw.githubusercontent.com/SoDebug/KernelSU/main/kernel/setup.sh" | bash -
       - name: Compiling Kernel
         run: |
