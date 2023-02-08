@@ -41,7 +41,7 @@ jobs:
           Source Code Tree: PixelExperience branch:thirteen
           Code: raphael
           Contain KernelSU: NO
-          Build Code: $(date +%Y%m%d)
+          Build Code: $(date +%Y%m%d)_${{ github.run_number }}
           Only For Pixel Experience 13(Official) commit:543bbf1
           " >> INFO.txt
           
@@ -57,6 +57,6 @@ jobs:
         with:
           artifacts: Raphael-Kernel_PE13_$(date +%Y%m%d).zip
           name: " Raphael-Kernel_PE13_$(date +%Y%m%d).zip"
-          tag: " $(date +%Y%m%d)_Raphael-Kernel_PE13"
+          tag: " ${{ github.run_number }}_Raphael-Kernel_PE13"
           bodyFile: "INFO.txt"
           token: ${{ secrets.GITHUB_TOKEN }}
