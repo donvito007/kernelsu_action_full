@@ -43,8 +43,9 @@ jobs:
                       raphael_defconfig
           make -j $(nproc) \
                       O="$output_dir" \
-                      CC=clang 
-                      -enable-trivial-auto-var-init-zero-knowing-it-will-be-removed-from-clang
+                      CC=clang \
+                      CLANG_CXX_FLAGS="-ftrivial-auto-var-init=zero -enable-trivial-auto-var-init-zero-knowing-it-will-be-removed-from-clang"
+
           popd
       - name: Creating Config Info
         run: |
