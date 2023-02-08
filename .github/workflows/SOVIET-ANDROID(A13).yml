@@ -28,15 +28,15 @@ jobs:
           echo "CONFIG_KPROBE_EVENTS=y" >> arch/arm64/configs/raphael_defconfig
       - name: Compiling Kernel
         run: |
-          CLANG=~/clang/bin
+          # CLANG=~/clang/bin
           GCC32=~/arm-linux-androideabi-4.9/bin
           GCC64=~/aarch64-linux-android-4.9/bin
           PATH=$CLANG:$GCC64:$GCC32:$PATH
           export PATH
           export ARCH=arm64
           export CLANG_TRIPLE=aarch64-linux-gnu
-          export CLANG_CXX_FLAGS="-mllvm -ftrivial-auto-var-init=zero -mllvm -enable-trivial-auto-var-init-zero-knowing-it-will-be-removed-from-clang"
-          # export CLANG_CXX_FLAGS="-ftrivial-auto-var-init=zero -enable-trivial-auto-var-init-zero-knowing-it-will-be-removed-from-clang"
+          # export CLANG_CXX_FLAGS="-mllvm -ftrivial-auto-var-init=zero -mllvm -enable-trivial-auto-var-init-zero-knowing-it-will-be-removed-from-clang"
+          export CLANG_CXX_FLAGS="-ftrivial-auto-var-init=zero -enable-trivial-auto-var-init-zero-knowing-it-will-be-removed-from-clang"
           export CROSS_COMPILE=aarch64-linux-android-
           export CROSS_COMPILE_ARM32=arm-linux-androideabi-
           output_dir=out
