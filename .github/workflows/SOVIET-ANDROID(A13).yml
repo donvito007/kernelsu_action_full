@@ -30,6 +30,7 @@ jobs:
           echo "CONFIG_MODULE_UNLOAD=y" >> arch/arm64/configs/raphael_defconfig
           echo "CONFIG_KALLSYMS=y" >> arch/arm64/configs/raphael_defconfig
           echo "CONFIG_KALLSYMS_ALL=y" >> arch/arm64/configs/raphael_defconfig
+          echo "CONFIG_SECTION_MISMATCH_WARN_ONLY=y" >> arch/arm64/configs/raphael_defconfig
       - name: Compiling Kernel
         run: |
           CLANG=~/clang/bin
