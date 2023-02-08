@@ -1,4 +1,4 @@
-name: Build NOKernelSU For Raphael
+name: Build Kernel(PE13_tree_no_ksu) 
 
 on:
   workflow_dispatch:
@@ -32,11 +32,9 @@ jobs:
           export CROSS_COMPILE_ARM32=arm-linux-androideabi-
           output_dir=out
           pushd kernel_xiaomi_raphael
-          make O="$output_dir" \
-                      raphael_defconfig
-          make -j $(nproc) \
-                       O="$output_dir" \
-                       CC=clang
+          
+          make CC=clang AR=llvm-ar NM=llvm-nm OBJCOPY=llvm-objcopy OBJDUMP=llvm-objdump STRIP=llvm-strip raphael_defconfig
+          make CC=clang AR=llvm-ar NM=llvm-nm OBJCOPY=llvm-objcopy OBJDUMP=llvm-objdump STRIP=llvm-strip -j$(grep -c ^processor /proc/cpuinfo)
           popd
       - name: Creating Config Info
         run: |
