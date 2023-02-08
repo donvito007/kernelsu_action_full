@@ -36,7 +36,7 @@ jobs:
           export CROSS_COMPILE_ARM32=arm-linux-androideabi-
           output_dir=out
           pushd kernel_xiaomi_raphael
-          make LLVM=1 LLVM_IAS=1 CC="ccache clang" new_config
+          make LLVM=1 LLVM_IAS=1 CC="ccache clang" raphael_defconfig
           make LLVM=1 LLVM_IAS=1 CC="ccache clang" CFLAGS="-fno-unresolved-symbols" -j$(grep -c ^processor /proc/cpuinfo)
           popd
       - name: Creating Config Info
