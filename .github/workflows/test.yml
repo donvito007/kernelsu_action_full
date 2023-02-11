@@ -38,8 +38,7 @@ jobs:
           output_dir=out
           pushd kernel_raphael_sm8150
           make O="$output_dir" \
-                      cuttlefish_defconfig \
-                      /xiaomi/raphael_defconfig.config \
+                       raphael_defconfig
           make -j $(nproc) \
                        O="$output_dir" \
                        CC=clang
