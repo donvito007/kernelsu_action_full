@@ -14,16 +14,16 @@ jobs:
           sudo apt clean
       - name: Cloning Sources and Toolchain
         run: |
-          git clone https://github.com/SoDebug/kernel_xiaomi_raphael.git --depth=1 -b kprobes --recurse-submodules
+          git clone https://github.com/LuanHalaiko/kernel_raphael_sm8150.git --depth=1 -b 3.0.5 --recurse-submodules
           git clone https://gitlab.com/crdroidandroid/android_prebuilts_clang_host_linux-x86_clang-r445002 --depth=1 --single-branch --no-tags -b 12.0 ~/clang
           git clone https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9 -b android-10.0.0_r47 --depth=1 --single-branch --no-tags ~/aarch64-linux-android-4.9
           git clone https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9 -b android-10.0.0_r47 --depth=1 --single-branch --no-tags ~/arm-linux-androideabi-4.9
           git clone https://github.com/SoDebug/AnyKernel3.git
-      - name: intergrate KernelSU
-        run: |
-          cd kernel_xiaomi_raphael
-          curl -LSs "https://raw.githubusercontent.com/SoDebug/KernelSU/main/kernel/setup.sh" | bash -
-          echo "CONFIG_DEBUG_SECTION_MISMATCH=y" >> arch/arm64/configs/raphael_defconfig
+#       - name: intergrate KernelSU
+#         run: |
+#           cd kernel_xiaomi_raphael
+#           curl -LSs "https://raw.githubusercontent.com/SoDebug/KernelSU/main/kernel/setup.sh" | bash -
+#           echo "CONFIG_DEBUG_SECTION_MISMATCH=y" >> arch/arm64/configs/raphael_defconfig
       - name: Compiling Kernel
         run: |
           CLANG=~/clang/bin
@@ -36,32 +36,32 @@ jobs:
           export CROSS_COMPILE=aarch64-linux-android-
           export CROSS_COMPILE_ARM32=arm-linux-androideabi-
           output_dir=out
-          pushd kernel_xiaomi_raphael
+          pushd kernel_raphael_sm8150
           make LLVM=1 LLVM_IAS=1 CC="ccache clang" raphael_defconfig
           make LLVM=1 LLVM_IAS=1 CC="ccache clang" -j $(nproc)
           popd
       - name: Creating Config Info
         run: |
           echo "Device: RedMi K20 Pro 
-          Source Code Tree: SOVIET-ANDROID branch:13.0
+          Source Code Tree: Infinity branch:3.0.5
           Code: raphael
-          Contain KernelSU: YES
+          Contain KernelSU: NO
           Build Code: $(date +%Y%m%d)_${{ github.run_number }}
-          For SOVIET-ANDROID Kernel 13.0
+          For Infinity Kernel 3.0.5
           " >> INFO.txt
           
       - name: Packaging the Kernel
         run: |
-          cp -v kernel_xiaomi_raphael/out/arch/arm64/boot/Image.gz \
+          cp -v kernel_raphael_sm8150/out/arch/arm64/boot/Image.gz \
                      AnyKernel3/
           pushd AnyKernel3
-          7z a -mx9 ../Raphael-Kernel_KSU_Kprobe_config_SA13.zip *
+          7z a -mx9 ../Raphael-Kernel_Infinity_3.0.5.zip *
           popd
       - name: Uploading Kernel Package to GH-Release
         uses: ncipollo/release-action@v1.8.6
         with:
-          artifacts: Raphael-Kernel_KSU_Kprobe_config_SA13.zip
-          name: " Raphael-Kernel_KSU_Kprobe_SA13.zip"
-          tag: " ${{ github.run_number }}_Raphael-Kernel_KSU_Kprobe_config_SA13"
+          artifacts: Raphael-Kernel_Infinity_3.0.5.zip
+          name: " Raphael-Kernel_Infinity_3.0.5"
+          tag: " ${{ github.run_number }}_Raphael-Kernel_Infinity"
           bodyFile: "INFO.txt"
           token: ${{ secrets.GITHUB_TOKEN }}
