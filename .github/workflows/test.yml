@@ -10,8 +10,8 @@ jobs:
       - name: Installing Dependencies
         run: |
           sudo apt update -y
-          sudo apt-get install
-               git ccache automake flex lzop bison \
+          sudo apt-get install \
+               ccache automake flex lzop bison \
                gperf build-essential zip curl
                   zlib1g-dev zlib1g-dev:i386 \
                g++-multilib python-networkx 
