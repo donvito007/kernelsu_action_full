@@ -24,15 +24,9 @@ jobs:
           cd kernel_xiaomi_raphael
           curl -LSs "https://raw.githubusercontent.com/SoDebug/KernelSU/main/kernel/setup.sh" | bash -
           echo "CONFIG_KPROBES=y" >> arch/arm64/configs/raphael_defconfig
-          echo "CONFIG_OPTPROBES=y" >> arch/arm64/configs/raphael_defconfig
-          echo "CONFIG_KPROBES_ON_FTRACE=y" >> arch/arm64/configs/raphael_defconfig
-          echo "CONFIG_UPROBES=y" >> arch/arm64/configs/raphael_defconfig
-          echo "CONFIG_KRETPROBES=y" >> arch/arm64/configs/raphael_defconfig
           echo "CONFIG_HAVE_KPROBES=y" >> arch/arm64/configs/raphael_defconfig
-          echo "CONFIG_HAVE_KRETPROBES=y" >> arch/arm64/configs/raphael_defconfig
-          echo "CONFIG_HAVE_OPTPROBES=y" >> arch/arm64/configs/raphael_defconfig
-          echo "CONFIG_HAVE_KPROBES_ON_FTRACE=y" >> arch/arm64/configs/raphael_defconfig
           echo "CONFIG_KPROBE_EVENT=y" >> arch/arm64/configs/raphael_defconfig
+          echo "CONFIG_MODULES=y" >> arch/arm64/configs/raphael_defconfig
       - name: Compiling Kernel
         run: |
           CLANG=~/clang/bin
