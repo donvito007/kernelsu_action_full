@@ -1,7 +1,9 @@
 name: test
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - main
 
 jobs:
   KSUForRaphael:
@@ -14,7 +16,7 @@ jobs:
           sudo apt clean
       - name: Cloning Kernel Tree
         run: |
-          git clone https://github.com/SoDebug/kernel_raphael_sm8150.git --depth=1 -b 13.0 --recurse-submodules
+          git clone https://github.com/SoDebug/kernel_raphael_sm8150.git --depth=1 -b dev-pwn --recurse-submodules
       - name: Cloning Toolchain
         run: |
           git clone https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86 --depth=1 --single-branch --no-tags -b master ~/clang
