@@ -26,7 +26,7 @@ jobs:
       - name: Add KernelSU to Kernel Source Tree
         run: |
           cd kernel_raphael_sm8150
-          curl -LSs "https://raw.githubusercontent.com/SoDebug/KernelSU/main/kernel/setup.sh" | bash -
+          curl -LSs "https://raw.githubusercontent.com/SoDebug/KernelSU/commit_ad4d8e939ebe6f55a1d50ace42a03e3fecd3c59a/kernel/setup.sh" | bash -
       - name: Compiling Kernel
         run: |
           CLANG=~/clang/clang-r487747/bin
