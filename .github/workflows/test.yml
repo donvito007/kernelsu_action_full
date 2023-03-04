@@ -47,7 +47,7 @@ jobs:
       - name: Creating Config Info
         run: |
           echo "Device: RedMi K20 Pro 
-          Source Code Tree: SOVIET-ANDROID branch:fixedmm
+          Source Code Tree: SOVIET-ANDROID branch:ksu
           Code: raphael
           Contain KernelSU: NO
           Build Code: $(date +%Y%m%d)_${GITHUB_SHA::8}
@@ -59,13 +59,13 @@ jobs:
           cp -v kernel_raphael_sm8150/out/arch/arm64/boot/Image.gz \
                      AnyKernel3/
           pushd AnyKernel3
-          7z a -mx9 ../Raphael-Kernel_SOVIET-ANDROID_commit_${GITHUB_SHA::8}.zip *
+          7z a -mx9 ../Raphael-Kernel_SOVIET-ANDROID.zip *
           popd
       - name: Uploading Kernel Package to GH-Release
         uses: ncipollo/release-action@v1.8.6
         with:
-          artifacts: Raphael-Kernel_SOVIET-ANDROID_commit_${GITHUB_SHA::8}.zip
-          name: " Raphael-Kernel_SOVIET-ANDROID_commit_${GITHUB_SHA::8}"
+          artifacts: Raphael-Kernel_SOVIET-ANDROID.zip
+          name: " Raphael-Kernel_SOVIET-ANDROID"
           tag: " ${{ github.run_number }}_Raphael-Kernel_SA"
           bodyFile: "INFO.txt"
           token: ${{ secrets.GITHUB_TOKEN }}
