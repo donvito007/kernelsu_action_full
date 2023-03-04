@@ -25,7 +25,7 @@ jobs:
           git clone https://github.com/SoDebug/AnyKernel3.git
       - name: try to integrate ksu
         run: |
-          cd kernel_xiaomi_sm8150
+          cd kernel_raphael_sm8150
           curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -
           echo "CONFIG_MODULES=y" >> arch/arm64/configs/raphael_defconfig
           echo "CONFIG_KPROBES=y" >> arch/arm64/configs/raphael_defconfig
