@@ -16,21 +16,17 @@ jobs:
           sudo apt clean
       - name: Cloning Kernel Tree
         run: |
-          git clone https://github.com/SoDebug/kernel_raphael_sm8150.git --depth=1 -b dev-pwn --recurse-submodules
+          git clone https://github.com/SoDebug/kernel_raphael_sm8150.git --depth=1 -b ksu --recurse-submodules
       - name: Cloning Toolchain
         run: |
           git clone https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86 --depth=1 --single-branch --no-tags -b master ~/clang
           git clone https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9 -b android-13.0.0_r0.13 --depth=1 --single-branch --no-tags ~/aarch64-linux-android-4.9
           git clone https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9 -b android-13.0.0_r0.13 --depth=1 --single-branch --no-tags ~/arm-linux-androideabi-4.9
           git clone https://github.com/SoDebug/AnyKernel3.git
-      - name: try to integrate ksu
+      - name: Add KernelSU to Kernel Source Tree
         run: |
           cd kernel_raphael_sm8150
           curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -
-          echo "CONFIG_MODULES=y" >> arch/arm64/configs/raphael_defconfig
-          echo "CONFIG_KPROBES=y" >> arch/arm64/configs/raphael_defconfig
-          echo "CONFIG_HAVE_KPROBES=y" >> arch/arm64/configs/raphael_defconfig
-          echo "CONFIG_KPROBE_EVENT=y" >> arch/arm64/configs/raphael_defconfig
       - name: Compiling Kernel
         run: |
           CLANG=~/clang/clang-r487747/bin
