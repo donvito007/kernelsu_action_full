@@ -26,7 +26,7 @@ jobs:
       - name: Add KernelSU to Kernel Source Tree
         run: |
           cd kernel_raphael_sm8150
-          curl -LSs "https://raw.githubusercontent.com/SoDebug/KernelSU/main/kernel/setup.sh" | bash -
+          curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -
       - name: Compiling Kernel
         run: |
           CLANG=~/clang/clang-r487747/bin
@@ -40,8 +40,8 @@ jobs:
           export CROSS_COMPILE_ARM32=arm-linux-androideabi-
           output_dir=out
           pushd kernel_raphael_sm8150
-          make LLVM=1 LLVM_IAS=1 CC="ccache clang" raphael_defconfig
-          make LLVM=1 LLVM_IAS=1 CC="ccache clang" -j$(grep -c ^processor /proc/cpuinfo)
+          make LLVM=1 LLVM_IAS=1 CC="ccache clang" CFLAGS="-Wno-error" raphael_defconfig
+          make LLVM=1 LLVM_IAS=1 CC="ccache clang" CFLAGS="-Wno-error" -j$(grep -c ^processor /proc/cpuinfo)
           popd
       
       - name: Creating Config Info
