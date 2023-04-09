@@ -27,6 +27,7 @@ jobs:
           echo "CONFIG_HAVE_KPROBES=y" >> arch/arm64/configs/raphael_defconfig
           echo "CONFIG_KPROBE_EVENT=y" >> arch/arm64/configs/raphael_defconfig
           echo "CONFIG_MODULES=y" >> arch/arm64/configs/raphael_defconfig
+          echo " CONFIG_SECTION_MISMATCH_WARN_ONLY=y" >> arch/arm64/configs/raphael_defconfig
       - name: Compiling Kernel
         run: |
           CLANG=~/clang/bin
