@@ -22,7 +22,7 @@ jobs:
       - name: intergrate KernelSU
         run: |
           cd kernel_xiaomi_raphael
-          https://raw.githubusercontent.com/SoDebug/KernelSU/commit_ad4d8e939ebe6f55a1d50ace42a03e3fecd3c59a/kernel/setup.sh
+          curl -LSs "https://raw.githubusercontent.com/SoDebug/KernelSU/commit_ad4d8e939ebe6f55a1d50ace42a03e3fecd3c59a/kernel/setup.sh"
           echo "CONFIG_KPROBES=y" >> arch/arm64/configs/raphael_defconfig
           echo "CONFIG_HAVE_KPROBES=y" >> arch/arm64/configs/raphael_defconfig
           echo "CONFIG_KPROBE_EVENT=y" >> arch/arm64/configs/raphael_defconfig
