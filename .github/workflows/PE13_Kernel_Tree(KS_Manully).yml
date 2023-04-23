@@ -13,18 +13,18 @@ jobs:
           sudo apt clean
       - name: Cloning Sources and Toolchain
         run: |
-          git clone https://github.com/SoDebug/kernel_xiaomi_raphael_PE.git --depth=1 -b manully_intergrate --recurse-submodules
-          git clone https://gitlab.com/crdroidandroid/android_prebuilts_clang_host_linux-x86_clang-r445002 --depth=1 --single-branch --no-tags -b 12.0 ~/clang
-          git clone https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9 -b android-10.0.0_r47 --depth=1 --single-branch --no-tags ~/aarch64-linux-android-4.9
-          git clone https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9 -b android-10.0.0_r47 --depth=1 --single-branch --no-tags ~/arm-linux-androideabi-4.9
+          git clone https://github.com/SoDebug/kernel_xiaomi_raphael_PE.git --depth=1 -b 13.0_ksu --recurse-submodules
+          git clone https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86 --depth=1 --single-branch --no-tags -b master ~/clang
+          git clone https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9 -b android-13.0.0_r0.13 --depth=1 --single-branch --no-tags ~/aarch64-linux-android-4.9
+          git clone https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9 -b android-13.0.0_r0.13 --depth=1 --single-branch --no-tags ~/arm-linux-androideabi-4.9
           git clone https://github.com/SoDebug/AnyKernel3.git
       - name: Add KernelSU to Kernel Source Tree
         run: |
           cd kernel_xiaomi_raphael_PE
-          curl -LSs "https://raw.githubusercontent.com/SoDebug/KernelSU/main/kernel/setup.sh" | bash -
+          curl -LSs "https://raw.githubusercontent.com/SoDebug/KernelSU/commit_ad4d8e939ebe6f55a1d50ace42a03e3fecd3c59a/kernel/setup.sh" | bash -
       - name: Compiling Kernel
         run: |
-          CLANG=~/clang/bin
+          CLANG=~/clang/clang-r487747/bin
           GCC32=~/arm-linux-androideabi-4.9/bin
           GCC64=~/aarch64-linux-android-4.9/bin
           PATH=$CLANG:$GCC64:$GCC32:$PATH
@@ -35,8 +35,8 @@ jobs:
           export CROSS_COMPILE_ARM32=arm-linux-androideabi-
           output_dir=out
           pushd kernel_xiaomi_raphael_PE
-          make CC=clang AR=llvm-ar NM=llvm-nm OBJCOPY=llvm-objcopy OBJDUMP=llvm-objdump STRIP=llvm-strip raphael_defconfig
-          make CC=clang AR=llvm-ar NM=llvm-nm OBJCOPY=llvm-objcopy OBJDUMP=llvm-objdump STRIP=llvm-strip -j$(grep -c ^processor /proc/cpuinfo)
+          make LLVM=1 LLVM_IAS=1 CC="ccache clang" $ raphael_defconfig
+          make LLVM=1 LLVM_IAS=1 CC="ccache clang" -j$(grep -c ^processor /proc/cpuinfo)
           popd
       - name: Creating Config Info
         run: |
@@ -45,7 +45,7 @@ jobs:
           Code: raphael
           Contain KernelSU: YES(Manully_Intergrate)
           Build Code: $(date +%Y%m%d)_${{ github.run_number }}
-          Only For Pixel Experience 13(Official) commit:543bbf1
+          Only For Pixel Experience 13(Official) commit:e21123c
           " >> INFO.txt
           
       - name: Packaging the Kernel
