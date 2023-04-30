@@ -19,10 +19,22 @@ jobs:
           git clone https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9 -b android-10.0.0_r47 --depth=1 --single-branch --no-tags ~/aarch64-linux-android-4.9
           git clone https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9 -b android-10.0.0_r47 --depth=1 --single-branch --no-tags ~/arm-linux-androideabi-4.9
           git clone https://github.com/SoDebug/AnyKernel3.git
-      - name: Add KernelSU to Kernel Source Tree
+          
+          
+      - name: Remove Old KernelSU Files
         run: |
-          cd kernel_xiaomi_raphael
-          curl -LSs "https://raw.githubusercontent.com/SoDebug/KernelSU/main/kernel/setup.sh" | bash -
+          cd kernel_xiaomi_raphael && rm -rf drivers/kernelsu && rm -rf .git/module/*
+          
+      - name: Add KernelSU as Submodule
+        run: |
+          git submodule add https://github.com/SoDebug/KernelSU KernelSU |
+          git submodule init |
+          git submodule update
+          
+      - name: Integrate KernelSU 
+        run: 
+          curl -LSs "https://raw.githubusercontent.com/SoDebug/KernelSU/main/kernel/setup.sh" | bash -s v0.5.5
+          
       - name: Compiling Kernel
         run: |
           CLANG=~/clang/bin
