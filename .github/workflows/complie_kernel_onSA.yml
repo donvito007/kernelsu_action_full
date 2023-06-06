@@ -14,26 +14,26 @@ jobs:
           sudo apt clean
       - name: Cloning Sources and Toolchain
         run: |
-          git clone https://github.com/SoDebug/kernel_xiaomi_raphael.git --depth=1 -b tracker --recurse-submodules
-          git clone https://gitlab.com/crdroidandroid/android_prebuilts_clang_host_linux-x86_clang-r445002 --depth=1 --single-branch --no-tags -b 12.0 ~/clang
-          git clone https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9 -b android-10.0.0_r47 --depth=1 --single-branch --no-tags ~/aarch64-linux-android-4.9
-          git clone https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9 -b android-10.0.0_r47 --depth=1 --single-branch --no-tags ~/arm-linux-androideabi-4.9
-          git clone https://github.com/SoDebug/AnyKernel3.git ~/AnyKernel3
+          git clone https://github.com/bggRGjQaUbCoE/Kernel_New --depth=1 -b main --recurse-submodules
+          git clone --depth 1 https://gitlab.com/EndCredits/clang-crepuscular ~/clang
+          git clone --depth 1 https://github.com/SoDebug/AnyKernel3.git ~/AnyKernel3
       - name: Compiling Kernel
         run: |
-          CLANG=~/clang/bin
-          GCC32=~/arm-linux-androideabi-4.9/bin
-          GCC64=~/aarch64-linux-android-4.9/bin
-          PATH=$CLANG:$GCC64:$GCC32:$PATH
-          export PATH
+          export CLANG_PATH=~/clang
+          export PATH=${CLANG_PATH}/bin:${PATH}
+          export CLANG_TRIPLE=aarch64-linux-gnu-
+          export CROSS_COMPILE=aarch64-linux-gnu-
+          export CROSS_COMPILE_ARM32=arm-linux-gnueabi-
+          export CLANG_PREBUILT_BIN=${CLANG_PATH}/bin
+          export CC="ccache clang"
+          export CXX="ccache clang++"
+          export LD=ld.lld
+          export LLVM=1
+          export LLVM_IAS=1
           export ARCH=arm64
-          export CLANG_TRIPLE=aarch64-linux-gnu
-          export CROSS_COMPILE=aarch64-linux-android-
-          export CROSS_COMPILE_ARM32=arm-linux-androideabi-
-          output_dir=out
-          pushd kernel_xiaomi_raphael
-          make LLVM=1 LLVM_IAS=1 CC="ccache clang" raphael_defconfig
-          make LLVM=1 LLVM_IAS=1 CC="ccache clang" -j $(nproc)
+          export SUBARCH=arm64
+          make O=out vendor/y2q_chn_openx_defconfig
+          make -j $(nproc) CC=clang O=out
           popd
       - name: Creating Release Info
         run: |
